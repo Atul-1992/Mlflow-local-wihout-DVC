@@ -5,7 +5,7 @@ import mlflow
 
 
 def main():
-    mlflow.set_tracking_uri("http://localhost:6100")
+    mlflow.set_tracking_uri("http://mlflow:5000")
     experiment_name = "playground"
 
     try:

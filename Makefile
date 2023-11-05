@@ -6,3 +6,6 @@ start-mlflow-server:
 
 stop-mlflow-server:
 	docker compose down
+
+run-experiments:
+	docker run -it --name mlflow -v /experiments:/app bitnami/mlflow:latest script.py

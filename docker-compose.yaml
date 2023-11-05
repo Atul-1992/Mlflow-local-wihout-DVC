@@ -4,8 +4,15 @@ services:
     container_name: mlflow-server
     build:
       context: ./docker
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.server
     ports:
       - "5000:5000"
     volumes:
       - ./mlflow:/app
+
+  experiments:
+    container_name: experiments
+    image: docker.io/bitnami/mlflow:2
+    volumes:
+      - ./experiments:/app
+    command: ["./script.py"]
