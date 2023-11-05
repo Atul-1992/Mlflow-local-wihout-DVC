@@ -3,15 +3,15 @@ services:
   mlflow:
     container_name: mlflow-server
     build:
-      context: ./docker
+      context: .
       args:
         USER_NAME: "${USER_NAME:-atull}"
         USER_ID: "${USER_ID:-1232}"
-      dockerfile: Dockerfile.server
+      dockerfile: ./docker/Dockerfile.server
     ports:
       - "5000:5000"
     volumes:
-      - ./mlflow:/app
+      - ./mlflow:/server/mlflow
     depends_on:
       - postgres
 

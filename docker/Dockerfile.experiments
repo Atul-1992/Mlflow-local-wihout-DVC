@@ -35,4 +35,5 @@ RUN poetry config virtualenvs.create false \
     && cp poetry.lock ${BUILD_POETRY_LOCK} \
     && rm -rf ${HOME}/.cache/*
 
+USER root
 ENTRYPOINT [ "python3" ]

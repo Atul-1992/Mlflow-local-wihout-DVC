@@ -17,17 +17,14 @@ RUN addgroup --system --gid ${USER_ID} ${USER_NAME} \
     && mkdir -p /server \
     && chown -R ${USER_NAME}:${USER_NAME} /server /tmp
 
-# Set the working directory to /app
-WORKDIR /server
-
-# Copy the current directory contents into the container at /server
-COPY . /server
-
 # Install any needed packages specified in requirements.txt
 RUN pip install -qq mlflow psycopg2-binary
+
+# Set the working directory to /app
+WORKDIR /server
 
 # Expose the port for the MLflow server (default is 5000)
 EXPOSE 5000
 
 # Define the command to run your MLflow server
-CMD ["mlflow", "server", "--host", "0.0.0.0", "--backend-store-uri", "postgresql://mlflow:mlflow@postgres/mlflow", "--default-artifact-root", "/mlflow/artifacts"]
+CMD ["mlflow", "server", "--host", "0.0.0.0", "--backend-store-uri", "postgresql://mlflow:mlflow@postgres/mlflow", "--default-artifact-root", "./mlflow/artifacts"]

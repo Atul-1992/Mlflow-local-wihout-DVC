@@ -22,12 +22,18 @@ def main():
         mlflow.log_metric("foo", random() + 1)
         mlflow.log_metric("foo", random() + 2)
 
-        tmp_txt_path = "tmp.txt"
-        Path(tmp_txt_path).write_text("Everything is working!")
+        # Define the name of the artifact file
+        artifact_filename = "tmp.txt"
 
-        mlflow.log_artifact(tmp_txt_path)
+        # Construct the full path within the 'mlflow/artifacts' directory
+        artifact_path = Path(__file__).parents[1]/'mlflow'/'artifacts'/ artifact_filename
+        # artifact_path = os.path.join("mlflow/artifacts", artifact_filename)
 
-        Path(tmp_txt_path).unlink()
+        # Write content to the artifact file
+        artifact_path.write_text("Everything is working!")
+
+        # Log the artifact to MLflow
+        mlflow.log_artifact(artifact_path)
 
 
 if __name__ == "__main__":
