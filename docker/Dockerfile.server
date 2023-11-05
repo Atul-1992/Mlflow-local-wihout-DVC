@@ -1,17 +1,33 @@
 # Use an official Python runtime as a parent image
 FROM python:3.8-slim
 
-# Set the working directory to /app
-WORKDIR /app
+ARG USER_ID
+ARG USER_NAME
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+ENV HOME="/home/${USER_NAME}"
+
+ENV PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH="${HOME}/.local/bin:${VIRTUAL_ENV}/bin:${PATH}" \
+    TZ=Asia/Kolkata
+
+RUN addgroup --system --gid ${USER_ID} ${USER_NAME} \
+    && useradd --system -m --no-log-init --home-dir ${HOME} --uid ${USER_ID} --gid ${USER_NAME} --groups ${USER_NAME} ${USER_NAME} \
+    && chown -R ${USER_NAME}:${USER_NAME} ${HOME} \
+    && mkdir -p /server \
+    && chown -R ${USER_NAME}:${USER_NAME} /server /tmp
+
+# Set the working directory to /app
+WORKDIR /server
+
+# Copy the current directory contents into the container at /server
+COPY . /server
 
 # Install any needed packages specified in requirements.txt
-RUN pip install mlflow
+RUN pip install -qq mlflow psycopg2-binary
 
 # Expose the port for the MLflow server (default is 5000)
 EXPOSE 5000
 
 # Define the command to run your MLflow server
-CMD ["mlflow", "server", "--host", "0.0.0.0"]
+CMD ["mlflow", "server", "--host", "0.0.0.0", "--backend-store-uri", "postgresql://mlflow:mlflow@postgres/mlflow", "--default-artifact-root", "/mlflow/artifacts"]

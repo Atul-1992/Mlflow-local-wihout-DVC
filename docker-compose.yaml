@@ -4,15 +4,39 @@ services:
     container_name: mlflow-server
     build:
       context: ./docker
+      args:
+        USER_NAME: "${USER_NAME:-atull}"
+        USER_ID: "${USER_ID:-1232}"
       dockerfile: Dockerfile.server
     ports:
       - "5000:5000"
     volumes:
       - ./mlflow:/app
+    depends_on:
+      - postgres
 
   experiments:
     container_name: experiments
-    image: docker.io/bitnami/mlflow:2
+    # image: docker.io/bitnami/mlflow:2
+    build:
+      context: .
+      args:
+        USER_NAME: "${USER_NAME:-atull}"
+        USER_ID: "${USER_ID:-1232}"
+      dockerfile: ./docker/Dockerfile.experiments
     volumes:
-      - ./experiments:/app
-    command: ["./script.py"]
+      - .:/experiments
+    command: ["experiments/script.py"]
+    env_file:
+      - ./.envs/.experiments
+    depends_on:
+      - mlflow
+    
+
+  postgres:
+    container_name: postgres-local
+    image: postgres:latest
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .envs/.postgres

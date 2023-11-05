@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "mlflow-local-setup"
+version = "0.1.0"
+description = "Poetry installation for local mlflow setup"
+authors = ["Atul <atulsain16111617@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mlflow = "^2.8.0"
+dvc = "^3.28.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
