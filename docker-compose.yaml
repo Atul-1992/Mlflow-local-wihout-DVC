@@ -1,17 +1,20 @@
 version: "3"
 services:
+
   mlflow:
     container_name: mlflow-server
     build:
       context: .
       args:
-        USER_NAME: "${USER_NAME:-atull}"
-        USER_ID: "${USER_ID:-1232}"
+        MLFLOW_ARTIFACT_STORE: ${MLFLOW_ARTIFACT_STORE}
       dockerfile: ./docker/Dockerfile.server
     ports:
-      - "5000:5000"
+      - ${LOCAL_DEV_MLFLOW_SERVER_PORT}:${LOCAL_DEV_MLFLOW_SERVER_PORT}
     volumes:
-      - ./mlflow:/server/mlflow
+      - ./mlflow:/mlflow
+    env_file:
+      - .envs/.mlflow-common
+      - .envs/.mlflow-dev
     depends_on:
       - postgres
 

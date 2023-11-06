@@ -1,0 +1,15 @@
+artifact_uri: file:///experiments/mlruns/483532956283962123/c0d49967ada8458ca565c8e418103322/artifacts
+end_time: 1699263678610
+entry_point_name: ''
+experiment_id: '483532956283962123'
+lifecycle_stage: active
+run_id: c0d49967ada8458ca565c8e418103322
+run_name: painted-snail-949
+run_uuid: c0d49967ada8458ca565c8e418103322
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1699263677383
+status: 4
+tags: []
+user_id: atul
